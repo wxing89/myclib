@@ -76,5 +76,7 @@ char *modi_time2(char *t2, const char *fmt2, const char *t1, const char *fmt1, i
 
 char *get_date(char *date);
 char *get_datetime(char *datetime);
+char *get_datefmt(char *datetime, char *fmt);
 
 #endif
+

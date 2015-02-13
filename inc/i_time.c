@@ -380,3 +380,18 @@ char *get_datetime(char *datetime)
     else
         return datetime;
 }
+
+
+char *get_datefmt(char *datetime, char *fmt)
+{
+    time_t now;
+    struct tm *now_tm;
+    time(&now);
+    now_tm = localtime(&now);
+
+    if (strftime(datetime, TIME_LEN, fmt, now_tm) == 0)
+        return NULL;
+    else
+        return datetime;
+}
+

@@ -219,3 +219,23 @@ char *get_cfg(const char *filename, char *section, char *item)
 
     return trim(contextmsg);
 }
+
+void *allocArr(char **arr, size_t size, size_t nmemb)
+{
+    int i;
+    for (i = 0; i < nmemb; i++) {
+        if ((arr[i] = malloc(size)) == NULL)
+            return NULL; 
+    }
+    return (void *)arr;
+}
+
+
+void freeArr(char **arr, size_t nmemb)
+{
+    int i;
+    for (i = 0; i < nmemb; i++) {
+        if (arr[i])
+            free(arr[i]);
+    }
+}
