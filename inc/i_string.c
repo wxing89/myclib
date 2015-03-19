@@ -267,4 +267,3 @@ int reg_match(const char *str, const char *pattern) {
 
     return err;
 }
-

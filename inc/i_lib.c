@@ -27,7 +27,8 @@
 
 #define write_lock(fd, offset, whence, len) lock_reg(fd, F_SETLK, F_WRLCK, offset, whence, len)
 
-static int lock_reg(int fd, int cmd, int type, off_t offset, int whence, off_t len)
+static int 
+lock_reg(int fd, int cmd, int type, off_t offset, int whence, off_t len)
 {
     struct flock lock;
 
@@ -85,6 +86,16 @@ void check_run(char* lockFile)
     }
     /* leave file open until we terminate: lock will be held */
 }
+
+int sleepus(long sec, long usec)
+{
+    struct timeval tv;
+
+    tv.tv_sec = sec;
+    tv.tv_usec = usec;
+    return select(0, NULL, NULL, NULL, &tv);
+}
+
 
 void write_log(char *file, int line, const char *msg, ...) {
     FILE *fs;

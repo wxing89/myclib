@@ -22,6 +22,7 @@
 
 void check_run(char* lockFile);
 
+int sleepus(long sec, long usec);
 
 void *allocArr(char **arr, size_t size, size_t nmemb);
 void freeArr(char **arr, size_t nmemb);
