@@ -19,6 +19,7 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "i_string.h"
 #include "i_file.h"
@@ -46,7 +47,7 @@ int get_line(char *line, FILE *fs) {
     return n;
 }
 
-static void sort_file(char file_arr[][FILE_NAME_LEN], size_t nmemb) {
+static void sort_file(char **file_arr, size_t nmemb) {
     size_t i, j;
     for (i = 0; i < nmemb; ++i)
         for (j = i + 1; j < nmemb; ++j)
@@ -54,14 +55,17 @@ static void sort_file(char file_arr[][FILE_NAME_LEN], size_t nmemb) {
                 str_swap(file_arr[i], file_arr[j]);
 }
 
-int get_file(char file_arr[][FILE_NAME_LEN], const char *file_dir, const char *pattern) {
+
+int get_file(char **file_arr, const char *file_dir, const char *pattern) {
     char file_path[FILE_NAME_LEN];
 
     DIR *dir = NULL;
     struct dirent *dp;
 
+    errno = 0;
     if ((dir = opendir(file_dir)) == NULL) {
         printf("OPEN DIR %s ERROR!", file_dir);
+        perror(strerror(errno));
         return -1;
     }
 
@@ -69,23 +73,13 @@ int get_file(char file_arr[][FILE_NAME_LEN], const char *file_dir, const char *p
     int ismatch;
     while ((dp = readdir(dir)) != NULL) {
         struct stat st;
-        strcpy(file_path, file_dir);
-        strcat(file_path, "/");
-        strcat(file_path, dp->d_name);
-        
-        if (stat(file_path, &st) == 0) {
-            if (S_ISREG(st.st_mode)) {
-                ismatch = reg_match(dp->d_name, pattern);
-                if (ismatch == -1) {
-                    return -1;
-                } else if (ismatch == 0) {
-                    strcpy(file_arr[i], dp->d_name);
-                    ++i;
-                }
+        snprintf(file_path, FILE_NAME_LEN, "%s/%s", file_dir, dp->d_name);
+
+        if (reg_match(dp->d_name, pattern) == 0) {
+            if (stat(file_path, &st) == 0 && S_ISREG(st.st_mode)) {
+                strcpy(file_arr[i], dp->d_name);
+                ++i;
             }
-        } else {
-            printf("STAT FILE ERROR!");
-            return -1;
         }
     }
 

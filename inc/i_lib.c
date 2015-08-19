@@ -68,7 +68,7 @@ void check_run(char* lockFile)
     }
 
     /* write our process id */
-    sprintf(buf, "%d\\n", getpid());
+    sprintf(buf, "%d\n", getpid());
     if(write(fd, buf, strlen(buf)) != strlen(buf)) {
         close(fd);
         exit(EXIT_FAILURE);
