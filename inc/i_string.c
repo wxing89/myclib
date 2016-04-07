@@ -206,7 +206,7 @@ char *str_replaceall(char *str2, const char *str1, const char *src, const char *
     srclen = strlen(src);
     dstlen = strlen(dst);
 
-    while (p = strstr(p1, src)) {
+    while ((p = strstr(p1, src)) != NULL) {
         len = p - p1;
         memcpy(p2, p1, len);
         memcpy(p2 + len, dst, dstlen);

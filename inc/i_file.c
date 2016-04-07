@@ -37,9 +37,9 @@ int get_line(char *line, FILE *fs) {
     }
 
     size_t i;
-    for(i = strlen(tmp) - 1; i >= 0 && !isprint((tmp)[i]); --i)
+    for(i = strlen(tmp) - 1; i >= 0 && !isprint(tmp[i]); --i)
         ;
-    (tmp)[i + 1] = '\0';
+    tmp[i + 1] = '\0';
 
     strcpy(line, tmp);
     free(tmp);
