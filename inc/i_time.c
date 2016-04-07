@@ -175,7 +175,7 @@ struct tm *modi_tm(struct tm *tm2, const struct tm *tm1, int dt_off, int dt_type
 
         if (_hh >= 0 && _hh < 24) {
             tm2->tm_hour = _hh;
-            return;
+            return tm2;
         } else {
             tm2->tm_hour = _hh % 24 + (_hh < 0 ? 24 : 0);
             copy_tm(&tm3, tm2);
@@ -189,7 +189,7 @@ struct tm *modi_tm(struct tm *tm2, const struct tm *tm1, int dt_off, int dt_type
 
         if (_mi >=0 && _mi < 60) {
             tm2->tm_min = _mi;
-            return;
+            return tm2;
         } else {
             tm2->tm_min = _mi % 60 + (_mi < 0 ? 60 : 0);
             copy_tm(&tm3, tm2);
@@ -203,13 +203,15 @@ struct tm *modi_tm(struct tm *tm2, const struct tm *tm1, int dt_off, int dt_type
 
         if (_ss >= 0 && _ss < 60) {
             tm2->tm_sec = _ss;
-            return;
+            return tm2;
         } else {
             tm2->tm_sec = _ss % 60 + (_ss < 0 ? 60 : 0);
             copy_tm(&tm3, tm2);
             return modi_tm(tm2, &tm3, _ss / 60 - (_ss < 0), DATE_TYPE_MIN);
         }
     }
+
+    return tm2;
 }
 
 
